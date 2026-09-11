@@ -9,14 +9,14 @@ module.exports = async (req, res) => {
     const { id } = req.query;
 
     if (req.method === 'PUT') {
-      const { name, gender, is_active } = getBody(req);
+      const body = getBody(req);
+      const { name, gender, is_active } = body;
       const cur = await db.execute('SELECT * FROM participants WHERE id = ?', [id]);
       if (cur.rows.length === 0) return res.status(404).json({ error: '人员不存在' });
       const c = cur.rows[0];
-      const newName = name || c.name;
+      const newName = (name && name.trim()) || c.name;
       const newGender = gender || c.gender;
       const newActive = typeof is_active === 'boolean' ? (is_active ? 1 : 0) : c.is_active;
-      if (!newName) return res.status(400).json({ error: '姓名不能为空' });
       try {
         await db.execute('UPDATE participants SET name = ?, gender = ?, is_active = ? WHERE id = ?', [newName, newGender, newActive, id]);
         return res.json({ success: true });
@@ -28,7 +28,8 @@ module.exports = async (req, res) => {
 
     if (req.method === 'DELETE') {
       const subCount = await db.execute('SELECT COUNT(*) as cnt FROM submissions WHERE participant_id = ?', [id]);
-      if (subCount.rows[0].cnt > 0) {
+      const count = parseInt(subCount.rows[0].cnt);
+      if (count > 0) {
         await db.execute('UPDATE participants SET is_active = 0 WHERE id = ?', [id]);
         return res.json({ success: true, deactivated: true });
       }

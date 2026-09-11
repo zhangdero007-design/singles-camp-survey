@@ -63,13 +63,14 @@ async function loadPeople() {
       <th>ID</th><th>姓名</th><th>性别</th><th>状态</th><th>已提交</th><th>操作</th>
     </tr></thead><tbody>`;
   for (const p of people) {
+    const isActive = parseInt(p.is_active) === 1 || p.is_active === true || p.is_active === 'true' || p.is_active === 1;
     const genderTag = p.gender === 'male'
       ? '<span class="tag male">男生</span>'
       : '<span class="tag female">女生</span>';
-    const statusTag = p.is_active
+    const statusTag = isActive
       ? '<span class="tag active">有效</span>'
       : '<span class="tag inactive">停用</span>';
-    const submittedTag = p.submitted ? '✅ 已提交' : '—';
+    const submittedTag = (parseInt(p.submitted) > 0) ? '✅ 已提交' : '—';
     html += `<tr>
       <td>${p.id}</td>
       <td>${escapeHtml(p.name)}</td>
@@ -77,8 +78,8 @@ async function loadPeople() {
       <td>${statusTag}</td>
       <td>${submittedTag}</td>
       <td>
-        <button class="action-btn" onclick="editPerson(${p.id}, '${escapeAttr(p.name)}', '${p.gender}', ${p.is_active})">编辑</button>
-        <button class="action-btn" onclick="togglePerson(${p.id}, ${p.is_active})">${p.is_active ? '停用' : '启用'}</button>
+        <button class="action-btn" onclick="editPerson(${p.id}, '${escapeAttr(p.name)}', '${p.gender}', ${isActive ? 1 : 0})">编辑</button>
+        <button class="action-btn" onclick="togglePerson(${p.id}, ${isActive ? 1 : 0})">${isActive ? '停用' : '启用'}</button>
       </td>
     </tr>`;
   }
@@ -113,11 +114,21 @@ window.editPerson = function(id, name, gender, isActive) {
   }).then(() => loadPeople());
 };
 
-window.togglePerson = function(id, isActive) {
-  authFetch(`/api/admin/participants/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify({ name: '', gender: 'male', is_active: !isActive })
-  }).then(() => loadPeople());
+window.togglePerson = async function(id, isActive) {
+  try {
+    const res = await authFetch(`/api/admin/participants/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ is_active: !isActive })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || '操作失败');
+      return;
+    }
+    loadPeople();
+  } catch (e) {
+    alert('网络错误: ' + e.message);
+  }
 };
 
 async function loadStats() {
@@ -173,12 +184,13 @@ async function loadResults() {
     const genderTag = s.participant_gender === 'male'
       ? '<span class="tag male">男生</span>'
       : '<span class="tag female">女生</span>';
+    const pickNames = s.picks.map(p => escapeHtml(p.name)).join(' / ') || '—';
     html += `<tr>
       <td>${escapeHtml(s.participant_name)}</td>
       <td>${genderTag}</td>
-      <td>${escapeHtml(s.picks[0].name)}</td>
-      <td>${escapeHtml(s.picks[1].name)}</td>
-      <td>${escapeHtml(s.picks[2].name)}</td>
+      <td>${s.picks[0] ? escapeHtml(s.picks[0].name) : '—'}</td>
+      <td>${s.picks[1] ? escapeHtml(s.picks[1].name) : '—'}</td>
+      <td>${s.picks[2] ? escapeHtml(s.picks[2].name) : '—'}</td>
       <td>${s.submitted_at}</td>
       <td><button class="action-btn" style="color:#E17055;border-color:#E17055" onclick="deleteSubmission(${s.id}, '${escapeHtml(s.participant_name)}')">删除</button></td>
     </tr>`;

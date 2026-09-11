@@ -5,8 +5,27 @@ let participantId = null;
 let oppositeGenderList = [];
 let selectedPicks = { 1: null, 2: null, 3: null };
 
+function showLoading(msg) {
+  let el = document.getElementById('loadingOverlay');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'loadingOverlay';
+    el.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,249,245,0.8);z-index:200;display:flex;align-items:center;justify-content:center;font-size:14px;color:#E17055;';
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  el.style.display = 'flex';
+}
+
+function hideLoading() {
+  const el = document.getElementById('loadingOverlay');
+  if (el) el.style.display = 'none';
+}
+
 async function init() {
+  showLoading('加载中...');
   await loadParticipants();
+  hideLoading();
 }
 
 async function loadParticipants() {
@@ -29,12 +48,15 @@ document.getElementById('nameSelect').addEventListener('change', async function(
 
   resetFromStep(2);
 
+  showLoading('检查中...');
   const res = await fetch('/api/check-submitted', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name: selectedName })
   });
   const data = await res.json();
+  hideLoading();
+
   if (data.submitted) {
     showPage('donePage');
     return;
@@ -128,6 +150,8 @@ document.getElementById('modalConfirm').addEventListener('click', async () => {
   const picks = [1, 2, 3]
     .filter(i => selectedPicks[i] !== null)
     .map(i => ({ id: selectedPicks[i] }));
+
+  showLoading('提交中...');
   try {
     const res = await fetch('/api/submit', {
       method: 'POST',
@@ -135,12 +159,14 @@ document.getElementById('modalConfirm').addEventListener('click', async () => {
       body: JSON.stringify({ participant_id: participantId, picks })
     });
     const data = await res.json();
+    hideLoading();
     if (res.ok && data.success) {
       showPage('successPage');
     } else {
       document.getElementById('errorMsg').textContent = data.error || '提交失败，请重试';
     }
   } catch (e) {
+    hideLoading();
     document.getElementById('errorMsg').textContent = '网络错误，请重试';
   }
 });
