@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "buildCommand": null,
   "outputDirectory": "public",
   "rewrites": [
     { "source": "/admin/login", "destination": "/admin/login.html" },
