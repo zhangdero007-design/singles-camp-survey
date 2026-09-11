@@ -5,8 +5,8 @@ module.exports = async (req, res) => {
   try {
     await ensureTables();
     const { participant_id, picks } = getBody(req);
-    if (!participant_id || !Array.isArray(picks) || picks.length < 1 || picks.length > 3) {
-      return res.status(400).json({ error: '请至少选择 1 位' });
+    if (!participant_id || !Array.isArray(picks) || picks.length > 3) {
+      return res.status(400).json({ error: '选择人数不能超过 3 位' });
     }
     const pResult = await db.execute('SELECT id, gender FROM participants WHERE id = ?', [participant_id]);
     if (pResult.rows.length === 0) return res.status(400).json({ error: '参加者不存在' });

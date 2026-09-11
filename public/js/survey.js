@@ -111,8 +111,7 @@ function updateDropdowns() {
 }
 
 function updateSubmitButton() {
-  const pickedCount = [1, 2, 3].filter(i => selectedPicks[i] !== null).length;
-  document.getElementById('submitBtn').disabled = pickedCount === 0;
+  document.getElementById('submitBtn').disabled = false;
   document.getElementById('errorMsg').textContent = '';
 }
 
