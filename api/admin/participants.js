@@ -1,5 +1,6 @@
 const { db, ensureTables } = require('../../lib/db');
 const { requireAdmin } = require('../../lib/auth');
+const { getBody } = require('../../lib/helper');
 
 module.exports = async (req, res) => {
   await ensureTables();
@@ -15,7 +16,7 @@ module.exports = async (req, res) => {
   }
 
   if (req.method === 'POST') {
-    const { name, gender } = req.body;
+    const { name, gender } = getBody(req);
     if (!name || !gender) return res.status(400).json({ error: '姓名和性别不能为空' });
     if (!['male', 'female'].includes(gender)) return res.status(400).json({ error: '性别无效' });
     try {

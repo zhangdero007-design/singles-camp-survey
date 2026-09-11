@@ -1,8 +1,9 @@
 const { db, ensureTables } = require('../lib/db');
+const { getBody } = require('../lib/helper');
 
 module.exports = async (req, res) => {
   await ensureTables();
-  const { name } = req.body;
+  const { name } = getBody(req);
   if (!name) return res.status(400).json({ error: '缺少姓名' });
   const pResult = await db.execute({ sql: 'SELECT id FROM participants WHERE name = ?', args: [name] });
   if (pResult.rows.length === 0) return res.json({ submitted: false });

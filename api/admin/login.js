@@ -1,10 +1,11 @@
 const crypto = require('crypto');
 const { db, ensureTables } = require('../../lib/db');
 const { createToken } = require('../../lib/auth');
+const { getBody } = require('../../lib/helper');
 
 module.exports = async (req, res) => {
   await ensureTables();
-  const { password } = req.body;
+  const { password } = getBody(req);
   if (!password) return res.status(400).json({ error: '请输入密码' });
   const hash = crypto.createHash('sha256').update(password).digest('hex');
   const result = await db.execute({ sql: 'SELECT * FROM admins WHERE username = ?', args: ['admin'] });

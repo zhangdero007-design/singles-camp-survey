@@ -1,8 +1,9 @@
 const { db, ensureTables } = require('../lib/db');
+const { getBody } = require('../lib/helper');
 
 module.exports = async (req, res) => {
   await ensureTables();
-  const { participant_id, picks } = req.body;
+  const { participant_id, picks } = getBody(req);
   if (!participant_id || !Array.isArray(picks) || picks.length < 1 || picks.length > 3) {
     return res.status(400).json({ error: '请至少选择 1 位' });
   }

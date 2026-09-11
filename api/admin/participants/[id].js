@@ -1,5 +1,6 @@
 const { db, ensureTables } = require('../../../lib/db');
 const { requireAdmin } = require('../../../lib/auth');
+const { getBody } = require('../../../lib/helper');
 
 module.exports = async (req, res) => {
   await ensureTables();
@@ -7,7 +8,7 @@ module.exports = async (req, res) => {
   const { id } = req.query;
 
   if (req.method === 'PUT') {
-    const { name, gender, is_active } = req.body;
+    const { name, gender, is_active } = getBody(req);
     const cur = await db.execute({ sql: 'SELECT * FROM participants WHERE id = ?', args: [id] });
     if (cur.rows.length === 0) return res.status(404).json({ error: '人员不存在' });
     const c = cur.rows[0];
