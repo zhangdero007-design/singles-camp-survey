@@ -11,9 +11,9 @@ module.exports = async (req, res) => {
       args.push(gender);
     }
     sql += ' ORDER BY name';
-    const result = await db.execute({ sql, args });
+    const result = await db.execute(sql, args);
     res.status(200).json(result.rows);
   } catch (e) {
-    res.status(500).json({ error: e.message, stack: e.stack });
+    res.status(500).json({ error: e.message });
   }
 };
