@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>管理后台</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="admin-body">
+<div class="admin-container">
+  <div class="admin-header">
+    <h1>📊 调查管理后台</h1>
+    <a href="#" id="logoutBtn">退出登录</a>
+  </div>
+
+  <div class="admin-tabs">
+    <button class="admin-tab active" data-tab="people">人员管理</button>
+    <button class="admin-tab" data-tab="stats">统计概览</button>
+    <button class="admin-tab" data-tab="results">提交结果</button>
+    <button class="admin-tab" data-tab="matches">双向选择</button>
+    <button class="admin-tab" data-tab="export">导出</button>
+  </div>
+
+  <!-- ─── People Management ─── -->
+  <div class="admin-panel active" id="panel-people">
+    <div class="admin-card">
+      <h2>添加参加者</h2>
+      <div class="add-person-form">
+        <input type="text" id="newName" placeholder="姓名">
+        <select id="newGender">
+          <option value="male">男生</option>
+          <option value="female">女生</option>
+        </select>
+        <button class="add-btn" id="addBtn">添加</button>
+      </div>
+    </div>
+    <div class="admin-card">
+      <h2>参加者名单</h2>
+      <div id="peopleTable" style="overflow-x:auto;">
+        <div class="empty-state">加载中...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Stats ─── -->
+  <div class="admin-panel" id="panel-stats">
+    <div class="admin-card">
+      <h2>统计概览</h2>
+      <div class="stats-grid" id="statsGrid"></div>
+    </div>
+    <div class="admin-card">
+      <h2>被选择次数排行</h2>
+      <div id="likeCountList"></div>
+    </div>
+  </div>
+
+  <!-- ─── Results ─── -->
+  <div class="admin-panel" id="panel-results">
+    <div class="admin-card">
+      <h2>所有提交结果</h2>
+      <div id="resultsTable" style="overflow-x:auto;">
+        <div class="empty-state">加载中...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Matches ─── -->
+  <div class="admin-panel" id="panel-matches">
+    <div class="admin-card">
+      <h2>❤️ 双向选择</h2>
+      <div id="mutualList"></div>
+    </div>
+    <div class="admin-card">
+      <h2>单向选择</h2>
+      <div id="oneWayList"></div>
+    </div>
+  </div>
+
+  <!-- ─── Export ─── -->
+  <div class="admin-panel" id="panel-export">
+    <div class="admin-card">
+      <h2>导出数据</h2>
+      <div class="export-buttons">
+        <button class="export-btn" id="exportSubmissions">📥 导出提交明细 (CSV)</button>
+        <button class="export-btn" id="exportMatches">📥 导出匹配结果 (CSV)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/admin.js"></script>
+</body>
+</html>

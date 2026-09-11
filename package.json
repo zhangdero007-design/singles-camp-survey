@@ -1,0 +1,8 @@
+{
+  "name": "singles-camp-survey",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@libsql/client": "^0.9.0"
+  }
+}

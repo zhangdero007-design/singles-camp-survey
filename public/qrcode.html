@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>扫码参与调查</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, "PingFang SC", sans-serif;
+      background: #FFF9F5;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    h1 { font-size: 24px; color: #2D3436; margin-bottom: 8px; }
+    .subtitle { font-size: 14px; color: #636E72; margin-bottom: 30px; }
+    .qr-box {
+      background: #fff;
+      padding: 24px;
+      border-radius: 20px;
+      box-shadow: 0 2px 16px rgba(225,112,85,0.12);
+      display: inline-block;
+    }
+    .url {
+      margin-top: 20px;
+      font-size: 13px;
+      color: #636E72;
+      word-break: break-all;
+      max-width: 400px;
+    }
+    .admin-link {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 10px 20px;
+      background: #E17055;
+      color: #fff;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>❤️ 单身营好感度调查</h1>
+  <div class="subtitle">扫码即可参与</div>
+  <div class="qr-box">
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://ded43a993c4f5eb9-49-65-186-102.serveousercontent.com" alt="二维码" width="300" height="300">
+  </div>
+  <div class="url">https://ded43a993c4f5eb9-49-65-186-102.serveousercontent.com</div>
+  <br>
+  <a class="admin-link" href="https://ded43a993c4f5eb9-49-65-186-102.serveousercontent.com/admin/login">管理员后台</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>管理员登录</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="admin-body">
+<div class="login-container">
+  <div class="login-card">
+    <h1>🔧 管理员登录</h1>
+    <div class="login-error" id="loginError"></div>
+    <input type="password" id="passwordInput" placeholder="请输入管理密码" autofocus>
+    <button id="loginBtn">登录</button>
+    <a href="/" class="login-back">返回调查页</a>
+  </div>
+</div>
+<script>
+  document.getElementById('loginBtn').addEventListener('click', async () => {
+    const pwd = document.getElementById('passwordInput').value;
+    const err = document.getElementById('loginError');
+    if (!pwd) { err.textContent = '请输入密码'; return; }
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pwd })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        localStorage.setItem('adminToken', data.token);
+        window.location.href = '/admin';
+      } else {
+        err.textContent = data.error || '登录失败';
+      }
+    } catch (e) {
+      err.textContent = '网络错误';
+    }
+  });
+  document.getElementById('passwordInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('loginBtn').click();
+  });
+</script>
+</body>
+</html>

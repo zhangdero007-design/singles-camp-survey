@@ -1,0 +1,4 @@
+node_modules/
+survey.db*
+.local.db*
+.env

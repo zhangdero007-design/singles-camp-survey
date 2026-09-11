@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>单身营好感度调查</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- ─── Survey Page ─── -->
+<div id="surveyPage" class="survey-container">
+  <div class="survey-header">
+    <h1>❤️ 单身营好感度调查</h1>
+    <div class="subtitle">感谢你的参与</div>
+  </div>
+
+  <div class="survey-card">
+    <!-- Step 1: Name -->
+    <div class="survey-step active" id="step1">
+      <div class="step-label">请选择你的姓名</div>
+      <select id="nameSelect">
+        <option value="">请选择姓名 ▼</option>
+      </select>
+    </div>
+
+    <!-- Step 2: Gender -->
+    <div class="survey-step" id="step2">
+      <div class="step-label">请选择你的性别</div>
+      <div class="gender-options">
+        <button class="gender-btn" data-gender="male">男生</button>
+        <button class="gender-btn" data-gender="female">女生</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Pick 1~3 -->
+    <div class="survey-step" id="step3">
+      <div class="step-label" id="pickLabel">请选择异性</div>
+      <div class="step-hint">最少选 1 位，最多选 3 位，不能重复</div>
+
+      <div class="pick-section">
+        <div class="pick-item">
+          <div class="pick-label">第一位</div>
+          <select id="pick1" disabled>
+            <option value="">请选择 ▼</option>
+          </select>
+        </div>
+
+        <div class="pick-item">
+          <div class="pick-label">第二位（可选）</div>
+          <select id="pick2" disabled>
+            <option value="">可以不选 ▼</option>
+          </select>
+        </div>
+
+        <div class="pick-item">
+          <div class="pick-label">第三位（可选）</div>
+          <select id="pick3" disabled>
+            <option value="">可以不选 ▼</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="error-msg" id="errorMsg"></div>
+      <button class="submit-btn" id="submitBtn" disabled>提交</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Success Page ─── -->
+<div id="successPage" class="result-page">
+  <div class="result-icon">✅</div>
+  <div class="result-title">提交成功</div>
+  <div class="result-text">感谢你的参与！</div>
+</div>
+
+<!-- ─── Already Done Page ─── -->
+<div id="donePage" class="result-page">
+  <div class="result-icon">🎈</div>
+  <div class="result-title">你已完成本次调查</div>
+  <div class="result-text">感谢你的参与！</div>
+</div>
+
+<!-- ─── Confirm Modal ─── -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-box">
+    <div class="modal-title">确定提交吗？</div>
+    <div class="modal-text">提交后无法修改。</div>
+    <div class="modal-buttons">
+      <button class="modal-btn secondary" id="modalCancel">返回检查</button>
+      <button class="modal-btn primary" id="modalConfirm">确认提交</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/survey.js"></script>
+</body>
+</html>
